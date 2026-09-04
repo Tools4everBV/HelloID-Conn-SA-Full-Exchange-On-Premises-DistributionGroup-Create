@@ -1,80 +1,331 @@
 [
     {
-        "label":  "Details",
+        "label":  "Create group",
         "fields":  [
                        {
-                           "key":  "commonname",
+                           "key":  "groupType",
                            "templateOptions":  {
-                                                   "label":  "Naam",
-                                                   "placeholder":  "CommonName",
+                                                   "label":  "Group type",
+                                                   "useObjects":  false,
+                                                   "options":  [
+                                                                   "Distribution Group",
+                                                                   "Mail-enabled Security Group"
+                                                               ],
+                                                   "required":  true
+                                               },
+                           "type":  "radio",
+                           "defaultValue":  "Distribution Group",
+                           "summaryVisibility":  "Show",
+                           "textOrLabel":  "label",
+                           "requiresTemplateOptions":  true,
+                           "requiresKey":  true,
+                           "requiresDataSource":  false
+                       },
+                       {
+                           "key":  "displayName",
+                           "templateOptions":  {
+                                                   "label":  "Display Name",
+                                                   "placeholder":  "IT Department",
                                                    "required":  true,
-                                                   "minLength":  2
+                                                   "minLength":  1,
+                                                   "maxLength":  256,
+                                                   "pattern":  "^[A-Za-z0-9�-� .,_\u0027-]{1,256}$"
                                                },
                            "type":  "input",
                            "summaryVisibility":  "Show",
                            "requiresTemplateOptions":  true,
-                           "requiresKey":  true
-                       }
-                   ]
-    },
-    {
-        "label":  "Naming",
-        "fields":  [
+                           "requiresKey":  true,
+                           "requiresDataSource":  false
+                       },
                        {
-                           "key":  "naming",
+                           "key":  "nameValidation",
                            "templateOptions":  {
-                                                   "label":  "Naming",
-                                                   "required":  true,
-                                                   "grid":  {
-                                                                "columns":  [
-                                                                                {
-                                                                                    "headerName":  "Displayname",
-                                                                                    "field":  "displayname"
-                                                                                },
-                                                                                {
-                                                                                    "headerName":  "Common Name",
-                                                                                    "field":  "commonName"
-                                                                                },
-                                                                                {
-                                                                                    "headerName":  "Samaccountname",
-                                                                                    "field":  "samaccountname"
-                                                                                },
-                                                                                {
-                                                                                    "headerName":  "Mail",
-                                                                                    "field":  "mail"
-                                                                                },
-                                                                                {
-                                                                                    "headerName":  "Alias",
-                                                                                    "field":  "alias"
-                                                                                },
-                                                                                {
-                                                                                    "headerName":  "User Principal Name",
-                                                                                    "field":  "userPrincipalName"
-                                                                                }
-                                                                            ],
-                                                                "height":  300,
-                                                                "rowSelection":  "single"
-                                                            },
+                                                   "label":  "Display name validation",
+                                                   "placeholder":  "Display name will be validated on uniqnueness in Active Directory",
+                                                   "pattern":  "^Valid.*",
+                                                   "readonly":  true,
+                                                   "useDataSource":  true,
                                                    "dataSourceConfig":  {
                                                                             "dataSourceGuid":  "$dataSourceGuid_0",
                                                                             "input":  {
                                                                                           "propertyInputs":  [
                                                                                                                  {
-                                                                                                                     "propertyName":  "CommonName",
+                                                                                                                     "propertyName":  "displayName",
                                                                                                                      "otherFieldValue":  {
-                                                                                                                                             "otherFieldKey":  "commonname"
+                                                                                                                                             "otherFieldKey":  "displayName"
                                                                                                                                          }
                                                                                                                  }
                                                                                                              ]
                                                                                       }
                                                                         },
-                                                   "useDefault":  true,
-                                                   "defaultSelectorProperty":  "displayname"
+                                                   "displayField":  "output"
                                                },
-                           "type":  "grid",
+                           "hideExpression":  "!model[\"displayName\"]",
+                           "type":  "input",
                            "summaryVisibility":  "Show",
                            "requiresTemplateOptions":  true,
-                           "requiresKey":  true
+                           "requiresKey":  true,
+                           "requiresDataSource":  false
+                       },
+                       {
+                           "templateOptions":  {
+                                                   "title":  "This address will be created as the primary SMTP address of the mailbox",
+                                                   "titleField":  "",
+                                                   "bannerType":  "Info",
+                                                   "useBody":  false
+                                               },
+                           "type":  "textbanner",
+                           "summaryVisibility":  "Hide element",
+                           "body":  "Text Banner Content",
+                           "requiresTemplateOptions":  false,
+                           "requiresKey":  false,
+                           "requiresDataSource":  false
+                       },
+                       {
+                           "key":  "formRow",
+                           "templateOptions":  {
+
+                                               },
+                           "fieldGroup":  [
+                                              {
+                                                  "key":  "mailPrefix",
+                                                  "templateOptions":  {
+                                                                          "label":  "Email address",
+                                                                          "pattern":  "^[A-Za-z0-9]([A-Za-z0-9._-]*[A-Za-z0-9])?$",
+                                                                          "minLength":  1,
+                                                                          "maxLength":  200,
+                                                                          "required":  true,
+                                                                          "placeholder":  "it-department"
+                                                                      },
+                                                  "type":  "input",
+                                                  "summaryVisibility":  "Show",
+                                                  "requiresTemplateOptions":  true,
+                                                  "requiresKey":  true,
+                                                  "requiresDataSource":  false
+                                              },
+                                              {
+                                                  "key":  "mailDomain",
+                                                  "templateOptions":  {
+                                                                          "label":  "Mail domain",
+                                                                          "required":  true,
+                                                                          "useObjects":  false,
+                                                                          "useDataSource":  true,
+                                                                          "useFilter":  false,
+                                                                          "options":  [
+                                                                                          "Option 1",
+                                                                                          "Option 2",
+                                                                                          "Option 3"
+                                                                                      ],
+                                                                          "dataSourceConfig":  {
+                                                                                                   "dataSourceGuid":  "$dataSourceGuid_1",
+                                                                                                   "input":  {
+                                                                                                                 "propertyInputs":  [
+
+                                                                                                                                    ]
+                                                                                                             }
+                                                                                               },
+                                                                          "valueField":  "Id",
+                                                                          "textField":  "Id"
+                                                                      },
+                                                  "type":  "dropdown",
+                                                  "summaryVisibility":  "Show",
+                                                  "textOrLabel":  "text",
+                                                  "requiresTemplateOptions":  true,
+                                                  "requiresKey":  true,
+                                                  "requiresDataSource":  false
+                                              }
+                                          ],
+                           "type":  "formrow",
+                           "requiresTemplateOptions":  true,
+                           "requiresKey":  true,
+                           "requiresDataSource":  false
+                       },
+                       {
+                           "key":  "mailValidation",
+                           "templateOptions":  {
+                                                   "label":  "Email address validation",
+                                                   "readonly":  true,
+                                                   "placeholder":  "Email address will be validated on uniqnueness in Active Directory",
+                                                   "required":  true,
+                                                   "pattern":  "^Valid.*",
+                                                   "useDataSource":  true,
+                                                   "dataSourceConfig":  {
+                                                                            "dataSourceGuid":  "$dataSourceGuid_2",
+                                                                            "input":  {
+                                                                                          "propertyInputs":  [
+                                                                                                                 {
+                                                                                                                     "propertyName":  "mailPrefix",
+                                                                                                                     "otherFieldValue":  {
+                                                                                                                                             "otherFieldKey":  "mailPrefix"
+                                                                                                                                         }
+                                                                                                                 },
+                                                                                                                 {
+                                                                                                                     "propertyName":  "mailDomain",
+                                                                                                                     "otherFieldValue":  {
+                                                                                                                                             "otherFieldKey":  "mailDomain"
+                                                                                                                                         }
+                                                                                                                 }
+                                                                                                             ]
+                                                                                      }
+                                                                        },
+                                                   "displayField":  "output"
+                                               },
+                           "hideExpression":  "!model[\"mailPrefix\"]",
+                           "type":  "input",
+                           "summaryVisibility":  "Show",
+                           "requiresTemplateOptions":  true,
+                           "requiresKey":  true,
+                           "requiresDataSource":  false
+                       },
+                       {
+                           "templateOptions":  {
+                                                   "title":  "The alias (mailNickname) is a short name used as an internal identifier for the group",
+                                                   "titleField":  "",
+                                                   "bannerType":  "Info",
+                                                   "useBody":  true
+                                               },
+                           "type":  "textbanner",
+                           "summaryVisibility":  "Hide element",
+                           "body":  "**The alias is a short name used as an internal identifier for the new group.**\r\n\r\nIt is not the same as the email address.  \r\nThe alias can only have **one** value, and it will be created exactly as entered.\r\n\r\nIf you do not provide an alias, the username portion of the email address will be used automatically.\r\n\r\nUse only letters, numbers, and periods (no spaces).  \r\nDo not include a domain (no \"@\").",
+                           "requiresTemplateOptions":  false,
+                           "requiresKey":  false,
+                           "requiresDataSource":  false
+                       },
+                       {
+                           "key":  "alias",
+                           "templateOptions":  {
+                                                   "label":  "Alias",
+                                                   "placeholder":  "it-dep",
+                                                   "pattern":  "^[A-Za-z0-9]([A-Za-z0-9._-]*[A-Za-z0-9])?$"
+                                               },
+                           "type":  "input",
+                           "summaryVisibility":  "Show",
+                           "requiresTemplateOptions":  true,
+                           "requiresKey":  true,
+                           "requiresDataSource":  false
+                       },
+                       {
+                           "key":  "aliasValidation",
+                           "templateOptions":  {
+                                                   "label":  "Alias validation",
+                                                   "pattern":  "^Valid.*",
+                                                   "placeholder":  "Alias will be validated on uniqnueness in Exchange On-Premises",
+                                                   "useDataSource":  true,
+                                                   "dataSourceConfig":  {
+                                                                            "dataSourceGuid":  "$dataSourceGuid_3",
+                                                                            "input":  {
+                                                                                          "propertyInputs":  [
+                                                                                                                 {
+                                                                                                                     "propertyName":  "alias",
+                                                                                                                     "otherFieldValue":  {
+                                                                                                                                             "otherFieldKey":  "alias"
+                                                                                                                                         }
+                                                                                                                 },
+                                                                                                                 {
+                                                                                                                     "propertyName":  "mailDomain",
+                                                                                                                     "otherFieldValue":  {
+                                                                                                                                             "otherFieldKey":  "mailDomain"
+                                                                                                                                         }
+                                                                                                                 }
+                                                                                                             ]
+                                                                                      }
+                                                                        },
+                                                   "displayField":  "output",
+                                                   "readonly":  true
+                                               },
+                           "hideExpression":  "!model[\"alias\"]",
+                           "type":  "input",
+                           "summaryVisibility":  "Show",
+                           "requiresTemplateOptions":  true,
+                           "requiresKey":  true,
+                           "requiresDataSource":  false
+                       }
+                   ]
+    },
+    {
+        "label":  "Group permissions",
+        "fields":  [
+                       {
+                           "key":  "membersToAdd",
+                           "templateOptions":  {
+                                                   "label":  "Users to grant membership",
+                                                   "required":  true,
+                                                   "grid":  {
+                                                                "columns":  [
+                                                                                {
+                                                                                    "headerName":  "User Principal Name",
+                                                                                    "field":  "UserPrincipalName"
+                                                                                },
+                                                                                {
+                                                                                    "headerName":  "Display Name",
+                                                                                    "field":  "DisplayName"
+                                                                                },
+                                                                                {
+                                                                                    "headerName":  "Primary Smtp Address",
+                                                                                    "field":  "PrimarySmtpAddress"
+                                                                                }
+                                                                            ],
+                                                                "height":  300,
+                                                                "rowSelection":  "multiple"
+                                                            },
+                                                   "dataSourceConfig":  {
+                                                                            "dataSourceGuid":  "$dataSourceGuid_4",
+                                                                            "input":  {
+                                                                                          "propertyInputs":  [
+
+                                                                                                             ]
+                                                                                      }
+                                                                        },
+                                                   "useFilter":  true,
+                                                   "useDefault":  false,
+                                                   "allowCsvDownload":  false
+                                               },
+                           "type":  "multiselectgrid",
+                           "summaryVisibility":  "Show",
+                           "requiresTemplateOptions":  true,
+                           "requiresKey":  true,
+                           "requiresDataSource":  true
+                       },
+                       {
+                           "key":  "ownersToAdd",
+                           "templateOptions":  {
+                                                   "label":  "Users to grant ownership",
+                                                   "required":  true,
+                                                   "grid":  {
+                                                                "columns":  [
+                                                                                {
+                                                                                    "headerName":  "User Principal Name",
+                                                                                    "field":  "UserPrincipalName"
+                                                                                },
+                                                                                {
+                                                                                    "headerName":  "Display Name",
+                                                                                    "field":  "DisplayName"
+                                                                                },
+                                                                                {
+                                                                                    "headerName":  "Primary Smtp Address",
+                                                                                    "field":  "PrimarySmtpAddress"
+                                                                                }
+                                                                            ],
+                                                                "height":  300,
+                                                                "rowSelection":  "multiple"
+                                                            },
+                                                   "dataSourceConfig":  {
+                                                                            "dataSourceGuid":  "$dataSourceGuid_5",
+                                                                            "input":  {
+                                                                                          "propertyInputs":  [
+
+                                                                                                             ]
+                                                                                      }
+                                                                        },
+                                                   "useFilter":  true,
+                                                   "useDefault":  false,
+                                                   "allowCsvDownload":  false
+                                               },
+                           "type":  "multiselectgrid",
+                           "summaryVisibility":  "Show",
+                           "requiresTemplateOptions":  true,
+                           "requiresKey":  true,
+                           "requiresDataSource":  true
                        }
                    ]
     }
